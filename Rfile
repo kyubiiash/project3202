@@ -1,0 +1,43 @@
+library(readr)
+library(dplyr)
+NCAA_data = read.table("~/Desktop/Stats Project 1/basketball_use.dat")
+names(NCAA_data) = c("year", "school_win", "score_win", "school_loose", "score_loose")
+NCAA_data$total_score = NCAA_data$score_win + NCAA_data$score_loose
+NCAA_data$difference_score = NCAA_data$score_win - NCAA_data$score_loose
+hist(NCAA_data$total_score, breaks = 100)
+
+mean(NCAA_data$total_score)
+sd(NCAA_data$total_score)
+hist(NCAA_data$difference_score, breaks = 100)
+
+mean(NCAA_data$difference_score)
+sd(NCAA_data$difference_score)
+median(NCAA_data$difference_score)
+
+
+hist(NCAA_data$total_score, breaks = 100, probability = TRUE)
+box()
+grid()
+curve(dnorm(x, mean = mean(NCAA_data$total_score), sd = sd(NCAA_data$total_score)),
+      add=TRUE, col = 'dark orange', lwd =2)
+
+
+qqplot(x = qnorm(ppoints(NCAA_data$total_score), 
+                 mean = mean(NCAA_data$total_score), sd = sd(NCAA_data$total_score)),
+       y = NCAA_data$total_score,
+       xlim = c(50,250), ylim = c(50,250),
+       main = "QQ-Plot: Percent of Deep Sleep, Beta Distribution",
+       xlab = "Theoretical Quantiles, Beta Distribution",
+       ylab = "Sample Quantiles, Percent of Deep Sleep")
+abline(a = 0, b = 1, col = "dodgerblue", lwd = 2)
+grid()
+
+qqplot(x = qnorm(ppoints(NCAA_data$difference_score), 
+                 mean = mean(NCAA_data$difference_score), sd = sd(NCAA_data$difference_score)),
+       y = NCAA_data$difference_score,
+       xlim = c(0,50), ylim = c(0,50),
+       main = "QQ-Plot: Percent of Deep Sleep, Beta Distribution",
+       xlab = "Theoretical Quantiles, Beta Distribution",
+       ylab = "Sample Quantiles, Percent of Deep Sleep")
+abline(a = 0, b = 1, col = "dodgerblue", lwd = 2)
+grid()
